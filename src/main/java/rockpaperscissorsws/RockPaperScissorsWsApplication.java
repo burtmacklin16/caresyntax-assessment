@@ -3,6 +3,8 @@ package rockpaperscissorsws;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import rockpaperscissorsws.rest.controllers.ControllerComponentScanTarget;
+
 @SpringBootApplication(
 	scanBasePackageClasses = ControllerComponentScanTarget.class
 )

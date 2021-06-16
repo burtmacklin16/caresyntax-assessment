@@ -13,8 +13,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import rockpaperscissorsws.domain.PlaySelection;
+import rockpaperscissorsws.domain.Difficulty;
 import rockpaperscissorsws.domain.RoundStatus;
+import rockpaperscissorsws.domain.ThrowSelection;
 import rockpaperscissorsws.domain.commands.PlayRoundCommand;
 import rockpaperscissorsws.domain.values.RoundResult;
 import rockpaperscissorsws.rest.controllers.GameController;
@@ -39,9 +40,9 @@ public class GameControllerTests {
 	public void confirmHouseThrowIsGenerated() {
 		
 		Mockito.when(houseThrowsGenerator.generateThrow())
-		       .thenReturn(PlaySelection.ROCK);
+		       .thenReturn(ThrowSelection.ROCK);
 		
-		final ResponseEntity<PlaySelection> houseThrowResponse = classUnderTest.getHouseThrow();
+		final ResponseEntity<ThrowSelection> houseThrowResponse = classUnderTest.getHouseThrow(null);
 		
 		Mockito.verify(houseThrowsGenerator, Mockito.times(1)).generateThrow();
 		
@@ -50,11 +51,33 @@ public class GameControllerTests {
 		
 		assertEquals(HttpStatus.OK, houseThrowResponse.getStatusCode());
 		
-		final PlaySelection responseMessageBody = houseThrowResponse.getBody();
+		final ThrowSelection responseMessageBody = houseThrowResponse.getBody();
 
 		assertNotNull(responseMessageBody);
 
-		assertEquals(PlaySelection.ROCK, responseMessageBody);
+		assertEquals(ThrowSelection.ROCK, responseMessageBody);
+	}
+
+	@Test
+	public void confirmHouseThrowIsGeneratedWhenDifficultyIsSpecified() {
+		
+		Mockito.when(houseThrowsGenerator.generateThrow(Mockito.nullable(Difficulty.class)))
+		       .thenReturn(ThrowSelection.ROCK);
+		
+		final ResponseEntity<ThrowSelection> houseThrowResponse = classUnderTest.getHouseThrow(Difficulty.HARD);
+		
+		Mockito.verify(houseThrowsGenerator, Mockito.times(1)).generateThrow(Mockito.nullable(Difficulty.class));
+		
+		// verify the response and body
+		assertNotNull(houseThrowResponse);
+		
+		assertEquals(HttpStatus.OK, houseThrowResponse.getStatusCode());
+		
+		final ThrowSelection responseMessageBody = houseThrowResponse.getBody();
+
+		assertNotNull(responseMessageBody);
+
+		assertEquals(ThrowSelection.ROCK, responseMessageBody);
 	}
 
 	@Test
@@ -63,8 +86,8 @@ public class GameControllerTests {
 		Mockito.when(mockGameplayService.playRound(Mockito.nullable(PlayRoundCommand.class)))
 		       .thenReturn(RoundResult.builder()
 		    		   			      .currentScore(10)
-		    		   			      .houseChoice(PlaySelection.PAPER)
-		    		   			      .humanPlayerChoice(PlaySelection.ROCK)
+		    		   			      .houseChoice(ThrowSelection.PAPER)
+		    		   			      .humanPlayerChoice(ThrowSelection.ROCK)
 		    		   			      .resultOfRound(RoundStatus.WIN)
 		    		                  .build());
 		
@@ -77,8 +100,8 @@ public class GameControllerTests {
 		
 		final PlayRoundCommand transformedCommand = commandCaptor.getValue();
 		
-		assertEquals(PlaySelection.PAPER, transformedCommand.getHouseChoice());
-		assertEquals(PlaySelection.ROCK, transformedCommand.getHumanPlayerChoice());
+		assertEquals(ThrowSelection.PAPER, transformedCommand.getHouseChoice());
+		assertEquals(ThrowSelection.ROCK, transformedCommand.getHumanPlayerChoice());
 		
 		// verify the response and body transformation
 		assertNotNull(playResultResponse);
@@ -89,8 +112,8 @@ public class GameControllerTests {
 
 		assertNotNull(responseMessageBody);
 
-		assertEquals(PlaySelection.PAPER, responseMessageBody.getHouseChoice());
-		assertEquals(PlaySelection.ROCK, responseMessageBody.getHumanPlayerChoice());
+		assertEquals(ThrowSelection.PAPER, responseMessageBody.getHouseChoice());
+		assertEquals(ThrowSelection.ROCK, responseMessageBody.getHumanPlayerChoice());
 		assertEquals(10, responseMessageBody.getCurrentScore());
 		assertEquals(RoundStatus.WIN, responseMessageBody.getResultOfRound());
 	}
@@ -105,8 +128,8 @@ public class GameControllerTests {
 		
 		final SelectedPlaysMessage inputMessage = new SelectedPlaysMessage();
 				
-		inputMessage.setHouseChoice(PlaySelection.PAPER);
-		inputMessage.setHumanPlayerChoice(PlaySelection.ROCK);
+		inputMessage.setHouseChoice(ThrowSelection.PAPER);
+		inputMessage.setHumanPlayerChoice(ThrowSelection.ROCK);
 		
 		return inputMessage;
 	}

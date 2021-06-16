@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import rockpaperscissorsws.domain.PlaySelection;
+import rockpaperscissorsws.domain.ThrowSelection;
 
 @Data
 @NoArgsConstructor
@@ -14,8 +14,8 @@ import rockpaperscissorsws.domain.PlaySelection;
 public class SelectedPlaysMessage {
 
 	@ApiModelProperty(value = "The selected play value of the human player.", required = true)
-	private PlaySelection humanPlayerChoice;
+	private ThrowSelection humanPlayerChoice;
 
 	@ApiModelProperty(value = "The selected play value of the house player.", required = true)
-	private PlaySelection houseChoice;
+	private ThrowSelection houseChoice;
 }

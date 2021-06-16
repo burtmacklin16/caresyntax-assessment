@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import rockpaperscissorsws.domain.PlaySelection;
+import rockpaperscissorsws.domain.Difficulty;
+import rockpaperscissorsws.domain.ThrowSelection;
 import rockpaperscissorsws.domain.commands.PlayRoundCommand;
 import rockpaperscissorsws.domain.values.RoundResult;
 import rockpaperscissorsws.rest.messages.RoundResultMessage;
@@ -26,11 +27,18 @@ public final class GameController {
 	
 	@ApiOperation(value = "Returns a play selection value that represents what the house would play.")
 	@GetMapping("/throws")
-	public ResponseEntity<PlaySelection> getHouseThrow() {
+	public ResponseEntity<ThrowSelection> getHouseThrow(final Difficulty houseThrowDifficulty) {
 		
 		log.debug("Attempting to generate a house throw");
 		
-		final PlaySelection houseThrow = houseThrowsGenerator.generateThrow();
+		final ThrowSelection houseThrow;
+		
+		if (houseThrowDifficulty == null) {
+			houseThrow = houseThrowsGenerator.generateThrow();
+			
+		} else {
+			houseThrow = houseThrowsGenerator.generateThrow(houseThrowDifficulty);
+		}
 
 		return ResponseEntity.ok(houseThrow);
 	}

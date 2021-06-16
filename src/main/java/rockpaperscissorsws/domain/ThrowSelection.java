@@ -1,6 +1,6 @@
 package rockpaperscissorsws.domain;
 
-public enum PlaySelection {
+public enum ThrowSelection {
 	
 	ROCK,
 	PAPER,

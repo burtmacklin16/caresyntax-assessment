@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import rockpaperscissorsws.domain.PlaySelection;
@@ -23,6 +24,7 @@ public final class GameController {
 	private final IGameplayService gameplayService;
 	private final IHouseThrowsGenerator houseThrowsGenerator;
 	
+	@ApiOperation(value = "Returns a play selection value that represents what the house would play.")
 	@GetMapping("/throws")
 	public ResponseEntity<PlaySelection> getHouseThrow() {
 		
@@ -33,6 +35,8 @@ public final class GameController {
 		return ResponseEntity.ok(houseThrow);
 	}
 	
+	@ApiOperation(value = "Takes the user and house input and plays the round. The response is a message that "
+			+ " indicates the winner and current score of the user.")
 	@PostMapping("/plays")
 	public ResponseEntity<RoundResultMessage> playRound(final SelectedPlaysMessage playersInput) {
 		
@@ -55,7 +59,7 @@ public final class GameController {
 		return PlayRoundCommand.builder()
 							   .houseChoice(playersInput.getHouseChoice())
 							   .humanPlayerChoice(playersInput.getHumanPlayerChoice())
-							    .build();
+							   .build();
 	}
 
 	/**

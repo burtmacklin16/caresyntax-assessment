@@ -1,16 +1,19 @@
 package rockpaperscissorsws.rest.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import rockpaperscissorsws.domain.PlaySelection;
 import rockpaperscissorsws.domain.commands.PlayRoundCommand;
 import rockpaperscissorsws.domain.values.RoundResult;
 import rockpaperscissorsws.rest.messages.RoundResultMessage;
 import rockpaperscissorsws.rest.messages.SelectedPlaysMessage;
 import rockpaperscissorsws.service.IGameplayService;
+import rockpaperscissorsws.service.IHouseThrowsGenerator;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +21,17 @@ import rockpaperscissorsws.service.IGameplayService;
 public final class GameController {
 	
 	private final IGameplayService gameplayService;
+	private final IHouseThrowsGenerator houseThrowsGenerator;
+	
+	@GetMapping("/throws")
+	public ResponseEntity<PlaySelection> getHouseThrow() {
+		
+		log.debug("Attempting to generate a house throw");
+		
+		final PlaySelection houseThrow = houseThrowsGenerator.generateThrow();
+
+		return ResponseEntity.ok(houseThrow);
+	}
 	
 	@PostMapping("/plays")
 	public ResponseEntity<RoundResultMessage> playRound(final SelectedPlaysMessage playersInput) {

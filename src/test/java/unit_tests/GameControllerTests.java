@@ -21,15 +21,41 @@ import rockpaperscissorsws.rest.controllers.GameController;
 import rockpaperscissorsws.rest.messages.RoundResultMessage;
 import rockpaperscissorsws.rest.messages.SelectedPlaysMessage;
 import rockpaperscissorsws.service.IGameplayService;
+import rockpaperscissorsws.service.IHouseThrowsGenerator;
 
 @ExtendWith(MockitoExtension.class)
 public class GameControllerTests {
+
+	@Mock
+	private IHouseThrowsGenerator houseThrowsGenerator;
 	
 	@Mock
 	private IGameplayService mockGameplayService;
 	
 	@InjectMocks
 	private GameController classUnderTest;
+	
+	@Test
+	public void confirmHouseThrowIsGenerated() {
+		
+		Mockito.when(houseThrowsGenerator.generateThrow())
+		       .thenReturn(PlaySelection.ROCK);
+		
+		final ResponseEntity<PlaySelection> houseThrowResponse = classUnderTest.getHouseThrow();
+		
+		Mockito.verify(houseThrowsGenerator, Mockito.times(1)).generateThrow();
+		
+		// verify the response and body
+		assertNotNull(houseThrowResponse);
+		
+		assertEquals(HttpStatus.OK, houseThrowResponse.getStatusCode());
+		
+		final PlaySelection responseMessageBody = houseThrowResponse.getBody();
+
+		assertNotNull(responseMessageBody);
+
+		assertEquals(PlaySelection.ROCK, responseMessageBody);
+	}
 
 	@Test
 	public void confirmOkHttpStatusWithBodyReturned() {

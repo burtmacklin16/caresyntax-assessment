@@ -3,7 +3,7 @@ package rockpaperscissorsws.service;
 import rockpaperscissorsws.domain.Difficulty;
 import rockpaperscissorsws.domain.ThrowSelection;
 
-public interface IHouseThrowsGenerator {
+public interface IHouseThrowsFactory {
 
 	/**
 	 * Returns a {@link ThrowSelection} enumeration value representing

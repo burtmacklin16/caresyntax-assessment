@@ -16,12 +16,12 @@ import rockpaperscissorsws.service.strategies.IHouseThrowsStrategy;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class HouseThrowsGenerator implements IHouseThrowsGenerator {
+public class HouseThrowsFactory implements IHouseThrowsFactory {
 	
 	private final Collection<IHouseThrowsStrategy> strategies;
 
 	/**
-	* @see rockpaperscissorsws.service.IHouseThrowsGenerator#generateThrow()
+	* @see rockpaperscissorsws.service.IHouseThrowsFactory#generateThrow()
 	*/
 	@Override
 	public ThrowSelection generateThrow() {
@@ -29,7 +29,7 @@ public class HouseThrowsGenerator implements IHouseThrowsGenerator {
 	}
 
 	/**
-	* @see rockpaperscissorsws.service.IHouseThrowsGenerator#generateThrow(rockpaperscissorsws.domain.Difficulty)
+	* @see rockpaperscissorsws.service.IHouseThrowsFactory#generateThrow(rockpaperscissorsws.domain.Difficulty)
 	*/
 	@Override
 	public ThrowSelection generateThrow(final Difficulty houseDifficulty) {
@@ -42,10 +42,13 @@ public class HouseThrowsGenerator implements IHouseThrowsGenerator {
 	}
 
 	/**
-	 * 
+	 * Uses all of the available {@link IHouseThrowsStrategy} implementations and determines
+	 * which one satisfies the provided difficulty level
 	 * 
 	 * @param houseDifficulty
+	 * 		The level of perceived difficulty of the house
 	 * @return
+	 * 		The strategy to use when generating a throw
 	 */
 	private IHouseThrowsStrategy resolveStrategyForDifficulty(final Difficulty houseDifficulty) {
 		

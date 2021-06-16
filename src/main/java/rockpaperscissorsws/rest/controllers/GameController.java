@@ -15,7 +15,7 @@ import rockpaperscissorsws.domain.values.RoundResult;
 import rockpaperscissorsws.rest.messages.RoundResultMessage;
 import rockpaperscissorsws.rest.messages.SelectedPlaysMessage;
 import rockpaperscissorsws.service.IGameplayService;
-import rockpaperscissorsws.service.IHouseThrowsGenerator;
+import rockpaperscissorsws.service.IHouseThrowsFactory;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ import rockpaperscissorsws.service.IHouseThrowsGenerator;
 public final class GameController {
 	
 	private final IGameplayService gameplayService;
-	private final IHouseThrowsGenerator houseThrowsGenerator;
+	private final IHouseThrowsFactory houseThrowsGenerator;
 	
 	@ApiOperation(value = "Returns a play selection value that represents what the house would play.")
 	@GetMapping("/throws")

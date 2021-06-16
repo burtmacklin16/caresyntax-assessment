@@ -22,13 +22,13 @@ import rockpaperscissorsws.rest.controllers.GameController;
 import rockpaperscissorsws.rest.messages.RoundResultMessage;
 import rockpaperscissorsws.rest.messages.SelectedPlaysMessage;
 import rockpaperscissorsws.service.IGameplayService;
-import rockpaperscissorsws.service.IHouseThrowsGenerator;
+import rockpaperscissorsws.service.IHouseThrowsFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class GameControllerTests {
 
 	@Mock
-	private IHouseThrowsGenerator houseThrowsGenerator;
+	private IHouseThrowsFactory houseThrowsGenerator;
 	
 	@Mock
 	private IGameplayService mockGameplayService;

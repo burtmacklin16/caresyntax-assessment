@@ -8,6 +8,7 @@ import rockpaperscissorsws.domain.ThrowSelection;
 @Builder
 public class PlayRoundCommand {
 
+	private final String playerId;
 	private final ThrowSelection humanPlayerChoice;
 	private final ThrowSelection houseChoice;
 }

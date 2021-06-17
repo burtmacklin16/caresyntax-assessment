@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import rockpaperscissorsws.repos.DomainRepoComponentScanTarget;
 import rockpaperscissorsws.rest.controllers.ControllerComponentScanTarget;
 import rockpaperscissorsws.service.ServiceComponentScanTarget;
 import springfox.documentation.builders.PathSelectors;
@@ -15,7 +16,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication(
 	scanBasePackageClasses = {
 		ControllerComponentScanTarget.class,
-		ServiceComponentScanTarget.class
+		ServiceComponentScanTarget.class,
+		DomainRepoComponentScanTarget.class
 	}
 )
 @EnableSwagger2

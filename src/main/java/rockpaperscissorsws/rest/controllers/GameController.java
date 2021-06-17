@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import rockpaperscissorsws.domain.Difficulty;
@@ -27,7 +28,9 @@ public final class GameController {
 	
 	@ApiOperation(value = "Returns a play selection value that represents what the house would play.")
 	@GetMapping("/throws")
-	public ResponseEntity<ThrowSelection> getHouseThrow(final Difficulty houseThrowDifficulty) {
+	public ResponseEntity<ThrowSelection> getHouseThrow(
+			@ApiParam(value = "The level of difficulty for the house to generate its throws", required = false)
+			final Difficulty houseThrowDifficulty) {
 		
 		log.debug("Attempting to generate a house throw");
 		
@@ -67,6 +70,7 @@ public final class GameController {
 		return PlayRoundCommand.builder()
 							   .houseChoice(playersInput.getHouseChoice())
 							   .humanPlayerChoice(playersInput.getHumanPlayerChoice())
+							   .playerId(playersInput.getHumanPlayerId())
 							   .build();
 	}
 

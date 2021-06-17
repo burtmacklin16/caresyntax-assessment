@@ -13,6 +13,9 @@ import rockpaperscissorsws.domain.ThrowSelection;
 @ApiModel(description = "The input object representing both the user and house selected play values.")
 public class SelectedPlaysMessage {
 
+	@ApiModelProperty(value = "The unique id of the human player.", required = true)
+	private String humanPlayerId;
+
 	@ApiModelProperty(value = "The selected play value of the human player.", required = true)
 	private ThrowSelection humanPlayerChoice;
 

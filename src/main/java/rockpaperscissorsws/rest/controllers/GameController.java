@@ -1,5 +1,7 @@
 package rockpaperscissorsws.rest.controllers;
 
+import java.util.Comparator;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,8 @@ import rockpaperscissorsws.domain.Difficulty;
 import rockpaperscissorsws.domain.ThrowSelection;
 import rockpaperscissorsws.domain.commands.PlayRoundCommand;
 import rockpaperscissorsws.domain.values.RoundResult;
+import rockpaperscissorsws.persistence.GameStats;
+import rockpaperscissorsws.persistence.GameStatsRepository;
 import rockpaperscissorsws.rest.messages.RoundResultMessage;
 import rockpaperscissorsws.rest.messages.SelectedPlaysMessage;
 import rockpaperscissorsws.service.IGameplayService;
@@ -25,6 +29,20 @@ public final class GameController {
 	
 	private final IGameplayService gameplayService;
 	private final IHouseThrowsFactory houseThrowsGenerator;
+	private final GameStatsRepository gameStatsRepository;
+
+	
+	@ApiOperation(value = "Returns a play selection value that represents what the house would play.")
+	@GetMapping("/streaks")
+	public ResponseEntity<Integer> getLongestEverWinningStreak() {
+		
+		final GameStats longestWinningStreakStats = gameStatsRepository.findAll()
+																	   .stream()
+																	   .max(Comparator.comparing(GameStats::getRecordedTimestamp))
+																	   .orElseGet(GameStats::new);
+
+		return ResponseEntity.ok(longestWinningStreakStats.getLongestWinningStreak());
+	}
 	
 	@ApiOperation(value = "Returns a play selection value that represents what the house would play.")
 	@GetMapping("/throws")
